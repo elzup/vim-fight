@@ -1,11 +1,12 @@
 // @flow
 import * as React from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
 
-import type { Field as FieldProps } from '../../types'
+import type { Field as FieldProps, Players } from '../../types'
 import Square from '../Square'
 
-type Props = $Shape<FieldProps>
+type Props = $Shape<FieldProps & Players>
 
 const Code = styled.div`
   padding: 20px;
@@ -22,9 +23,15 @@ const CodeLine = styled.div`
 
 const Field = (props: Props) => (
   <Code>
-    {props.squares.map(squares => (
-      <CodeLine>
-        {squares.map(square => <Square charactor={square.charactor} />)}
+    {_.map(props.squares, (squares, ln) => (
+      <CodeLine key={ln}>
+        {squares.map(square => (
+          <Square
+            key={square.id}
+            charactor={square.charactor}
+            players={square.playersId.map(id => props.players[id])}
+          />
+        ))}
       </CodeLine>
     ))}
   </Code>

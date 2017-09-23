@@ -1,15 +1,18 @@
 // @flow
 import * as React from 'react'
-import type { Square as SquareProp } from '../../types'
+import type { Square as SquareProp, Players } from '../../types'
 
 import styled from 'styled-components'
 
-type Props = $Shape<SquareProp>
+type Props = $Shape<SquareProp & Players>
 
-const CodeCharactor = styled.div`width: 0.6em;`
+const CodeCharactor = styled.div`
+  width: 0.6em;
+  background: ${props => (props.on ? 'red' : 'black')};
+`
 
 const Square = (props: Props) => (
-  <CodeCharactor>{props.charactor}</CodeCharactor>
+  <CodeCharactor on={props.players.length > 0}>{props.charactor}</CodeCharactor>
 )
 
 export default Square
