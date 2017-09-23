@@ -34,6 +34,8 @@ export function loadFields(): ThunkAction {
       const field: Field = {
         squares: codeToSquares(rawFiled.code),
         players: { '1': { id: 1 } },
+        px: 0,
+        py: 0,
         ...rawFiled,
       }
       dispath(actions.receiveField(field))
@@ -80,19 +82,36 @@ function vimParse(s: string): VimParseResult {
 }
 
 function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
-  let newStack = s
-  if (s === 'h') {
-    newStack = ''
-    move(dispatch, state, -1, 0)
-  } else if (s === 'l') {
-    newStack = ''
-    move(dispatch, state, 1, 0)
-  } else if (s === 'j') {
-    newStack = ''
-    move(dispatch, state, 0, 1)
-  } else if (s === 'k') {
-    newStack = ''
-    move(dispatch, state, 0, -1)
+  let newStack = ''
+  const m1 = s.match(/^([0-9]*)([dcv])(.?.?)$/)
+  const m2 = s.match(/^([0-9]*)([a-zA-Z{}%$\]])$/)
+  if (m1) {
+    const mount = m1[0]
+    const op = m1[1]
+    const to = m1[2]
+    if (to.length == 2) {
+      if ('fFtTia'.indexOf(to[0]) > -1) {
+        // bad
+      } else {
+        // to[1];
+      }
+    }
+    if (to === '' || (to.length == 1 && 'fFtTia'.indexOf(to) > -1)) {
+      newStack = s
+    }
+  } else if (m2) {
+    const mount = parseInt(`0${m2[1]}`) || 1
+    const dire = m2[2]
+    if (dire === 'h') {
+      move(dispatch, state, -mount, 0)
+    } else if (dire === 'l') {
+      move(dispatch, state, mount, 0)
+    } else if (dire === 'j') {
+      move(dispatch, state, 0, mount)
+    } else if (dire === 'k') {
+      move(dispatch, state, 0, -mount)
+    }
+  } else {
   }
   return { newStack }
 }
@@ -105,9 +124,9 @@ export function gameSetup(): ThunkAction {
       }
       const state = getState()
       dispatch(actions.receiveKey(e.key))
-      console.log(state.stack + e.key)
-      const { newStack } = vimParseRun(dispatch, state, state.stack + e.key)
-      if (state.stack != newStack) {
+      console.log(state.Key.stack + e.key)
+      const { newStack } = vimParseRun(dispatch, state, state.Key.stack + e.key)
+      if (state.Key.stack != newStack) {
         dispatch(actions.updateStack(newStack))
       }
     }
