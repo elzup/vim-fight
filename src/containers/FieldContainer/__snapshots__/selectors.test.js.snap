@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lists all of the products as visible 1`] = `Array []`;
+
+exports[`when an item is added to the cart the inventory is reduced 1`] = `Array []`;
