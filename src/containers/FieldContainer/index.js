@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
 import { connect, type Connector } from 'react-redux'
-import type { State, Product, Field } from '../../types'
+import type { State, Field } from '../../types'
 import FieldComponent from '../../components/Field'
 import * as selectors from './selectors'
 

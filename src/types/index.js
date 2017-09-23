@@ -54,3 +54,11 @@ export type BaseField = {
 export type Field = BaseField & {
   squares: Array<Array<Square>>,
 }
+
+export type Player = {
+  id: number,
+}
+
+export type Players = {
+  players: Player[],
+}
