@@ -2,9 +2,9 @@
 import type { Action, KeyLog } from '../../types'
 import { Actions } from '../FieldContainer/actionTypes'
 
-export type State = { [id: number]: KeyLog, lastId: number }
+export type State = { [id: number]: KeyLog, lastId: number, stack: string }
 
-const initialState: State = { lastId: 0 }
+const initialState: State = { lastId: 0, stack: '' }
 
 export default function(
   state: State = initialState,
@@ -20,6 +20,9 @@ export default function(
       }
       console.log(keyLog)
       return { ...state, [id]: keyLog, lastId: state.lastId + 1 }
+    }
+    case Actions.UPDATE_STACK: {
+      return { ...state, stack: action.stack }
     }
     default:
       return state
