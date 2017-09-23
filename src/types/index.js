@@ -62,3 +62,9 @@ export type Player = {
 export type Players = {
   players: Player[],
 }
+
+export type KeyLog = {
+  id: number,
+  playerId: number,
+  charactor: string,
+}
