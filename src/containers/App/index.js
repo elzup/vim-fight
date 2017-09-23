@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react'
 import ProductsContainer from '../ProductsContainer'
+import FieldContainer from '../FieldContainer'
 import CartContainer from '../CartContainer'
 
 const App = () => (
@@ -10,6 +11,8 @@ const App = () => (
     <ProductsContainer />
     <hr />
     <CartContainer />
+    <hr />
+    <FieldContainer />
   </div>
 )
 

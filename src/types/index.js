@@ -45,6 +45,12 @@ export type Square = {
   playersId: number[],
 }
 
-export type Field = {
+export type BaseField = {
+  id: number,
+  title: string,
+  code: string,
+}
+
+export type Field = BaseField & {
   squares: Array<Array<Square>>,
 }
