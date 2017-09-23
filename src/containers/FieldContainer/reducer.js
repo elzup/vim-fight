@@ -1,4 +1,6 @@
 // @flow
+import _ from 'lodash'
+
 import type { Action, Field } from '../../types'
 import { Actions } from './actionTypes'
 import { Actions as VimActions } from '../Vim/actionTypes'
@@ -20,25 +22,20 @@ export default function(state: State = initialState, action: Action): State {
     case Actions.RECEIVE_FIELD:
       return action.field
     case VimActions.MOVE: {
+      const squares = _.update(
+        _.update(
+          state.squares,
+          `[${state.py}][${state.px}].playersId`,
+          () => []
+        ),
+        `[${action.ny}][${action.nx}].playersId`,
+        () => [1]
+      )
       return {
         ...state,
-        squares: {
-          ...state.squares,
-          [state.py]: {
-            ...state.squares[state.py],
-            [state.py]: {
-              ...state.squares[state.py][state.px],
-              playersId: [],
-            },
-          },
-          [action.ny]: {
-            ...state.squares[action.ny],
-            [action.nx]: {
-              ...state.squares[action.ny][action.nx],
-              playersId: [1],
-            },
-          },
-        },
+        squares,
+        px: action.nx,
+        py: action.ny,
       }
     }
 
