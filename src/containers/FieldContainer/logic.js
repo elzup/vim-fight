@@ -15,10 +15,11 @@ function codeToSquares(code): Array<Array<Square>> {
   return code.split('\n').map(line =>
     line.split('').map(c => {
       i += 1
+      const playersId = i == 0 ? [1] : []
       return {
         id: i,
         charactor: c,
-        playersId: [],
+        playersId,
       }
     })
   )
@@ -30,6 +31,7 @@ export function loadFields(): ThunkAction {
       const rawFiled = fields[0]
       const field: Field = {
         squares: codeToSquares(rawFiled.code),
+        players: { '1': { id: 1 } },
         ...rawFiled,
       }
       dispath(actions.receiveField(field))
@@ -55,14 +57,16 @@ function vimParse(s: string): parseResult {
 export function gameSetup(): ThunkAction {
   return (dispath, getState: GetState) => {
     window.onkeydown = e => {
-      if (whileListKey.indexOf(e.key) > -1) {
-        const { stack } = getState().Key
-        dispath(actions.receiveKey(e.key))
-        const { newStack, actionType } = vimParse(stack + e.key)
-        if (actionType != VimActions.NONE) {
-          dispath(actions.updateStack(newStack))
-        }
+      if (whileListKey.indexOf(e.key) == -1) {
+        return
       }
+      const { stack } = getState().Key
+      dispath(actions.receiveKey(e.key))
+      const { newStack, actionType } = vimParse(stack + e.key)
+      if (actionType == VimActions.NONE) {
+        return
+      }
+      dispath(actions.updateStack(newStack))
     }
   }
 }

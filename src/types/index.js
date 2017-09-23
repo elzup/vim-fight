@@ -53,6 +53,7 @@ export type BaseField = {
 
 export type Field = BaseField & {
   squares: Array<Array<Square>>,
+  players: Players,
 }
 
 export type Player = {
@@ -60,7 +61,7 @@ export type Player = {
 }
 
 export type Players = {
-  players: Player[],
+  [id: number]: Player,
 }
 
 export type KeyLog = {
