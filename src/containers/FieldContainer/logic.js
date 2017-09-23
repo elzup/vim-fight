@@ -1,4 +1,3 @@
-// @flow
 import * as game from '../../api/game'
 import type { ThunkAction, BaseField, Field, Square } from '../../types'
 import * as actions from './actions'
@@ -27,5 +26,18 @@ export function loadFields(): ThunkAction {
       }
       dispath(actions.receiveField(field))
     })
+  }
+}
+
+const whileListKey =
+  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+
+export function gameSetup(): ThunkAction {
+  return dispath => {
+    window.onkeydown = e => {
+      if (whileListKey.indexOf(e.key) > -1) {
+        dispath(actions.receiveKey(e.key))
+      }
+    }
   }
 }
