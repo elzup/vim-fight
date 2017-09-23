@@ -5,17 +5,19 @@ import type {
   BaseField,
   Field,
   Square,
+  Dispatch,
   GetState,
+  VimOperator,
 } from '../../types'
 import * as actions from './actions'
-import { Actions as VimActions } from '../Vim/actionTypes'
+import * as vimActions from '../Vim/actions'
 
 function codeToSquares(code): Array<Array<Square>> {
   let i = -1
   return code.split('\n').map(line =>
     line.split('').map(c => {
       i += 1
-      const playersId = i == 0 ? [1] : []
+      const playersId = i === 0 ? [1] : []
       return {
         id: i,
         charactor: c,
@@ -42,31 +44,72 @@ export function loadFields(): ThunkAction {
 const whileListKey =
   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 
-type parseResult = {
-  actionType: VimActions,
+type runResult = {
   newStack: string,
 }
 
-function vimParse(s: string): parseResult {
+function canMove(state: State, x: number, y: number): boolean {
+  return (
+    0 <= y &&
+    y < state.FieldContainer.squares.length &&
+    0 <= x &&
+    x < state.FieldContainer.squares[y].length
+  )
+}
+
+function move(dispatch: Dispatch, state: State, dx: number, dy: number) {
+  const nx = state.FieldContainer.px + dx
+  const ny = state.FieldContainer.py + dy
+  if (!canMove(state, nx, ny)) {
+    return
+  }
+  dispatch(vimActions.move(nx, ny))
+}
+
+type VimParseResult = {
+  op: VimOperator,
+  amount: number,
+  newStack: string,
+  hit: boolean,
+}
+
+function vimParse(s: string): VimParseResult {
   return {
-    actionType: VimActions.NONE,
-    newStack: s,
+    hit: false,
   }
 }
 
+function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
+  let newStack = s
+  if (s === 'h') {
+    newStack = ''
+    move(dispatch, state, -1, 0)
+  } else if (s === 'l') {
+    newStack = ''
+    move(dispatch, state, 1, 0)
+  } else if (s === 'j') {
+    newStack = ''
+    move(dispatch, state, 0, 1)
+  } else if (s === 'k') {
+    newStack = ''
+    move(dispatch, state, 0, -1)
+  }
+  return { newStack }
+}
+
 export function gameSetup(): ThunkAction {
-  return (dispath, getState: GetState) => {
+  return (dispatch, getState: GetState) => {
     window.onkeydown = e => {
-      if (whileListKey.indexOf(e.key) == -1) {
+      if (whileListKey.indexOf(e.key) === -1) {
         return
       }
-      const { stack } = getState().Key
-      dispath(actions.receiveKey(e.key))
-      const { newStack, actionType } = vimParse(stack + e.key)
-      if (actionType == VimActions.NONE) {
-        return
+      const state = getState()
+      dispatch(actions.receiveKey(e.key))
+      console.log(state.stack + e.key)
+      const { newStack } = vimParseRun(dispatch, state, state.stack + e.key)
+      if (state.stack != newStack) {
+        dispatch(actions.updateStack(newStack))
       }
-      dispath(actions.updateStack(newStack))
     }
   }
 }

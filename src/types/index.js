@@ -54,6 +54,8 @@ export type BaseField = {
 export type Field = BaseField & {
   squares: Array<Array<Square>>,
   players: Players,
+  px: number,
+  py: number,
 }
 
 export type Player = {
@@ -69,3 +71,16 @@ export type KeyLog = {
   playerId: number,
   charactor: string,
 }
+
+export type VIM_OP_DELETE = 'vim/op/d'
+export type VIM_OP_LEFT = 'vim/op/h'
+export type VIM_OP_RIGHT = 'vim/op/l'
+export type VIM_OP_UP = 'vim/op/k'
+export type VIM_OP_DOWN = 'vim/op/j'
+
+export type VimOperator =
+  | VIM_OP_DELETE
+  | VIM_OP_LEFT
+  | VIM_OP_RIGHT
+  | VIM_OP_UP
+  | VIM_OP_DOWN

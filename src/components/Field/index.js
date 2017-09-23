@@ -3,7 +3,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 
-import type { Field as FieldProps, Players } from '../../types'
+import type { Field as FieldProps } from '../../types'
 import Square from '../Square'
 
 type Props = $Shape<FieldProps>
