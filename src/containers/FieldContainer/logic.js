@@ -70,10 +70,9 @@ function nextToken(state: State): number {
   // TODO
 }
 
-function nextPos(state: State, target: string): number {
+function nextPos(state: State, target: string, d: number = 1): number {
   const { squares, px, py } = state.FieldContainer
-  for (var dx = 1; px + dx < squares[py].length; dx++) {
-    console.log('p? ', target, squares[py][px + dx])
+  for (var dx = 1; px + dx < squares[py].length; dx += d) {
     if (squares[py][px + dx].charactor === target) {
       return dx
     }
@@ -107,6 +106,22 @@ function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
       newStack = s
     } else if (dire === 'f') {
       move(dispatch, state, nextPos(state, target), 0)
+    } else if (dire === 'F') {
+      move(dispatch, state, nextPos(state, target, -1), 0)
+    } else if (dire === 't') {
+      move(
+        dispatch,
+        state,
+        Math.max(nextPos(state, target) - 1, state.FieldContainer.px),
+        0
+      )
+    } else if (dire === 'T') {
+      move(
+        dispatch,
+        state,
+        Math.min(nextPos(state, target, -1) + 1, state.FieldContainer.px),
+        0
+      )
     }
   } else if (m1) {
     const mount = parseInt(`0${m1[1]}`) || 1
