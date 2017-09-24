@@ -52,7 +52,7 @@ type runResult = {
 
 function checkMove(state: State, x: number, y: number): boolean {
   const { squares } = state.FieldContainer
-  const ty = Math.max(0, Math.min(squares.length, y))
+  const ty = Math.max(0, Math.min(squares.length - 1, y))
   const tx = Math.max(0, Math.min(squares[ty].length - 1, x))
   return { x: tx, y: ty }
 }

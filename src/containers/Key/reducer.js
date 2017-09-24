@@ -23,11 +23,12 @@ export default function(
         charactor: action.key,
         playerId: 0,
       }
+      const newHistory = action.key + state.history
       return {
         ...state,
         [id]: keyLog,
         lastId: state.lastId + 1,
-        history: (state.history + action.key).substring(0, 50),
+        history: newHistory.substring(0, 20),
       }
     }
     case Actions.UPDATE_STACK: {
