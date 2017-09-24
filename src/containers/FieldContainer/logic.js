@@ -43,6 +43,9 @@ export function loadFields(): ThunkAction {
   }
 }
 
+const whileListKey =
+  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890$'
+
 type runResult = {
   newStack: string,
 }
@@ -165,6 +168,9 @@ function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
 export function gameSetup(): ThunkAction {
   return (dispatch, getState: GetState) => {
     window.onkeydown = e => {
+      if (whileListKey.indexOf(e.key) === -1) {
+        return
+      }
       const state = getState()
       dispatch(actions.receiveKey(e.key))
       const { newStack } = vimParseRun(dispatch, state, state.Key.stack + e.key)
