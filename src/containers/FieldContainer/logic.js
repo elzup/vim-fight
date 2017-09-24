@@ -50,22 +50,18 @@ type runResult = {
   newStack: string,
 }
 
-function canMove(state: State, x: number, y: number): boolean {
-  return (
-    0 <= y &&
-    y < state.FieldContainer.squares.length &&
-    0 <= x &&
-    x < state.FieldContainer.squares[y].length
-  )
+function checkMove(state: State, x: number, y: number): boolean {
+  const { squares } = state.FieldContainer
+  const ty = Math.max(0, Math.min(squares.length, y))
+  const tx = Math.max(0, Math.min(squares[ty].length - 1, x))
+  return { x: tx, y: ty }
 }
 
 function move(dispatch: Dispatch, state: State, dx: number, dy: number) {
   const nx = state.FieldContainer.px + dx
   const ny = state.FieldContainer.py + dy
-  if (!canMove(state, nx, ny)) {
-    return
-  }
-  dispatch(vimActions.move(nx, ny))
+  const { x, y } = checkMove(state, nx, ny)
+  dispatch(vimActions.move(x, y))
 }
 
 type VimParseResult = {
@@ -124,7 +120,6 @@ export function gameSetup(): ThunkAction {
       }
       const state = getState()
       dispatch(actions.receiveKey(e.key))
-      console.log(state.Key.stack + e.key)
       const { newStack } = vimParseRun(dispatch, state, state.Key.stack + e.key)
       if (state.Key.stack != newStack) {
         dispatch(actions.updateStack(newStack))

@@ -18,7 +18,6 @@ export default function(
         charactor: action.key,
         playerId: 0,
       }
-      console.log(keyLog)
       return { ...state, [id]: keyLog, lastId: state.lastId + 1 }
     }
     case Actions.UPDATE_STACK: {
