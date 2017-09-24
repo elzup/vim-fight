@@ -64,6 +64,26 @@ function move(dispatch: Dispatch, state: State, dx: number, dy: number) {
   dispatch(vimActions.move(x, y))
 }
 
+function nextToken(state: State): number {
+  const { squares, px, py } = state.FieldContainer
+  for (var i = px + 1; i < squares[py].length; i++) {
+    // squares[i]
+  }
+  return 3
+  // TODO
+}
+
+function nextPos(state: State, target: string): number {
+  const { squares, px, py } = state.FieldContainer
+  for (var dx = 1; px + dx < squares[py].length; dx++) {
+    console.log('p? ', target, squares[py][px + dx])
+    if (squares[py][px + dx].charactor === target) {
+      return dx
+    }
+  }
+  return 0
+}
+
 type VimParseResult = {
   op: VimOperator,
   amount: number,
@@ -79,12 +99,22 @@ function vimParse(s: string): VimParseResult {
 
 function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
   let newStack = ''
+  const m0 = s.match(/^([0-9]*)([fFtT])(.?)$/)
   const m1 = s.match(/^([0-9]*)([dcv])(.?.?)$/)
   const m2 = s.match(/^([0-9]*)([0a-zA-Z{}%\$\]])$/)
-  if (m1) {
-    const mount = m1[0]
-    const op = m1[1]
-    const to = m1[2]
+  if (m0) {
+    const mount = parseInt(`0${m0[1]}`) || 1
+    const dire = m0[2]
+    const target = m0[3]
+    if (target === '') {
+      newStack = s
+    } else if (dire === 'f') {
+      move(dispatch, state, nextPos(state, target), 0)
+    }
+  } else if (m1) {
+    const mount = parseInt(`0${m1[1]}`) || 1
+    const op = m1[2]
+    const to = m1[3]
     if (to.length == 2) {
       if ('fFtTia'.indexOf(to[0]) > -1) {
         // bad
@@ -110,6 +140,10 @@ function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
       move(dispatch, state, -100, 0)
     } else if (dire === '$') {
       move(dispatch, state, 100, 0)
+    } else if (dire === 'w') {
+      move(dispatch, state, nextToken(state), 0)
+    } else if (dire === 'b') {
+      move(dispatch, state, 0, 0)
     }
   } else {
   }
