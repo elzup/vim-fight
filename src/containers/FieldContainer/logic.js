@@ -44,7 +44,7 @@ export function loadFields(): ThunkAction {
 }
 
 const whileListKey =
-  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890$'
 
 type runResult = {
   newStack: string,
@@ -80,7 +80,7 @@ function vimParse(s: string): VimParseResult {
 function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
   let newStack = ''
   const m1 = s.match(/^([0-9]*)([dcv])(.?.?)$/)
-  const m2 = s.match(/^([0-9]*)([a-zA-Z{}%$\]])$/)
+  const m2 = s.match(/^([0-9]*)([0a-zA-Z{}%\$\]])$/)
   if (m1) {
     const mount = m1[0]
     const op = m1[1]
@@ -106,6 +106,10 @@ function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
       move(dispatch, state, 0, mount)
     } else if (dire === 'k') {
       move(dispatch, state, 0, -mount)
+    } else if (dire === '0') {
+      move(dispatch, state, -100, 0)
+    } else if (dire === '$') {
+      move(dispatch, state, 100, 0)
     }
   } else {
   }
