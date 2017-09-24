@@ -44,7 +44,7 @@ export function loadFields(): ThunkAction {
 }
 
 const whileListKey =
-  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890$'
+  '!"#$%&\'()*+,-. /0123456789:;<=>?@ABCDEFGHJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 
 type runResult = {
   newStack: string,
