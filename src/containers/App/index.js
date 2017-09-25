@@ -13,6 +13,7 @@ const Base = styled.div`
 const App = () => (
   <Base>
     <h2>Vim Fight</h2>
+    <p>Vim emulate(Redux + FlowType + s2s)</p>
     <FieldContainer />
     <LogMonitorContainer />
   </Base>
