@@ -3,10 +3,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 
-import type { Field as FieldProps, Players } from '../../types'
+import type { Field as FieldProps } from '../../types'
 import Square from '../Square'
 
-type Props = $Shape<FieldProps & Players>
+type Props = $Shape<FieldProps>
 
 const Code = styled.div`
   padding: 20px;
