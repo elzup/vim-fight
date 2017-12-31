@@ -18,28 +18,6 @@ type ThunkDispatch<A> = ThunkAction => A
 export type Dispatch = ReduxDispatch<Action> & ThunkDispatch<Action>
 export type Store = ReduxStore<State, Action, Dispatch>
 
-// Shopping Cart
-type BaseProduct = {
-  id: number,
-  title: string,
-  price: number,
-}
-
-export type Product = BaseProduct & {
-  inventory: number,
-}
-
-export type ProductInCart = BaseProduct & {
-  quantity: number,
-}
-
-export type QuantityById = { [id: number]: number }
-
-export type Cart = {
-  addedIds: number[],
-  quantityById: QuantityById,
-}
-
 export type Square = {
   charactor: string,
   playersId: number[],
@@ -49,11 +27,13 @@ export type Player = {
   id: number,
 }
 
+export type Square2D = Array<Array<Square>>
+
 export type Field = {
   id: number,
   title: string,
   code: string,
-  squares: Array<Array<Square>>,
+  squares: Square2D,
   px: number,
   py: number,
 }
