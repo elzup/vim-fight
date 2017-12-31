@@ -45,22 +45,17 @@ export type Square = {
   playersId: number[],
 }
 
+export type Player = {
+  id: number,
+}
+
 export type Field = {
   id: number,
   title: string,
   code: string,
   squares: Array<Array<Square>>,
-  players: Players,
   px: number,
   py: number,
-}
-
-export type Player = {
-  id: number,
-}
-
-export type Players = {
-  [id: number]: Player,
 }
 
 export type KeyLog = {
