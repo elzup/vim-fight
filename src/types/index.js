@@ -44,6 +44,12 @@ export type KeyLog = {
   charactor: string,
 }
 
+export type KeyInfo = {
+  lastId: number,
+  history: string,
+  stack: string,
+}
+
 export type VIM_OP_DELETE = 'vim/op/d'
 export type VIM_OP_LEFT = 'vim/op/h'
 export type VIM_OP_RIGHT = 'vim/op/l'
