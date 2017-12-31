@@ -10,7 +10,7 @@ export type GetState = () => State
 
 export type ThunkAction = (
   dispatch: Dispatch,
-  getState: GetState
+  getState: GetState,
 ) => void | Promise<void>
 
 type ThunkDispatch<A> = ThunkAction => A
@@ -18,58 +18,36 @@ type ThunkDispatch<A> = ThunkAction => A
 export type Dispatch = ReduxDispatch<Action> & ThunkDispatch<Action>
 export type Store = ReduxStore<State, Action, Dispatch>
 
-// Shopping Cart
-type BaseProduct = {
-  id: number,
-  title: string,
-  price: number,
-}
-
-export type Product = BaseProduct & {
-  inventory: number,
-}
-
-export type ProductInCart = BaseProduct & {
-  quantity: number,
-}
-
-export type QuantityById = { [id: number]: number }
-
-export type Cart = {
-  addedIds: number[],
-  quantityById: QuantityById,
-}
-
 export type Square = {
   charactor: string,
   playersId: number[],
-}
-
-export type BaseField = {
-  id: number,
-  title: string,
-  code: string,
-}
-
-export type Field = BaseField & {
-  squares: Array<Array<Square>>,
-  players: Players,
-  px: number,
-  py: number,
 }
 
 export type Player = {
   id: number,
 }
 
-export type Players = {
-  [id: number]: Player,
+export type Square2D = Array<Array<Square>>
+
+export type Field = {
+  id: number,
+  title: string,
+  code: string,
+  squares: Square2D,
+  px: number,
+  py: number,
 }
 
 export type KeyLog = {
   id: number,
   playerId: number,
   charactor: string,
+}
+
+export type KeyInfo = {
+  lastId: number,
+  history: string,
+  stack: string,
 }
 
 export type VIM_OP_DELETE = 'vim/op/d'

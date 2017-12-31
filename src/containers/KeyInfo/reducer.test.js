@@ -6,11 +6,9 @@ import { initialState } from './reducer'
 
 test('RECEIVE_KEY', () => {
   expect(reducer(initialState, actions.receiveKey('a'))).toEqual({
-    '1': {
-      id: 1,
-      charactor: 'a',
-      playerId: 0,
-    },
+    lastId: 1,
+    stack: '',
+    history: 'a',
   })
 })
 
@@ -18,24 +16,15 @@ test('RECEIVE_KEY append', () => {
   expect(
     reducer(
       {
-        '1': {
-          id: 1,
-          charactor: 'a',
-          playerId: 0,
-        },
+        lastId: 1,
+        stack: '',
+        history: 'a',
       },
       actions.receiveKey('b'),
     ),
   ).toEqual({
-    '1': {
-      id: 1,
-      charactor: 'a',
-      playerId: 0,
-    },
-    '2': {
-      id: 2,
-      charactor: 'b',
-      playerId: 0,
-    },
+    lastId: 2,
+    stack: '',
+    history: 'ba',
   })
 })

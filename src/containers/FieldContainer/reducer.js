@@ -12,7 +12,6 @@ const initialState: State = {
   code: '',
   title: '',
   squares: [],
-  playersId: [],
   px: 0,
   py: 0,
 }
@@ -26,10 +25,10 @@ export default function(state: State = initialState, action: Action): State {
         _.update(
           state.squares,
           `[${state.py}][${state.px}].playersId`,
-          () => []
+          () => [],
         ),
         `[${action.ny}][${action.nx}].playersId`,
-        () => [1]
+        () => [1],
       )
       return {
         ...state,

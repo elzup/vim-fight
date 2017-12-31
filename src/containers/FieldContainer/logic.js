@@ -2,7 +2,6 @@ import * as game from '../../api/game'
 import type {
   State,
   ThunkAction,
-  BaseField,
   Field,
   Square,
   Dispatch,
@@ -23,13 +22,13 @@ function codeToSquares(code): Array<Array<Square>> {
         charactor: c,
         playersId,
       }
-    })
+    }),
   )
 }
 
 export function loadFields(): ThunkAction {
   return dispath => {
-    game.getFields((fields: BaseField[]) => {
+    game.getFields((fields: Field[]) => {
       const rawFiled = fields[0]
       const field: Field = {
         squares: codeToSquares(rawFiled.code),
@@ -116,14 +115,14 @@ function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
         dispatch,
         state,
         Math.max(nextPos(state, target) - 1, state.FieldContainer.px),
-        0
+        0,
       )
     } else if (dire === 'T') {
       move(
         dispatch,
         state,
         Math.min(nextPos(state, target, -1) + 1, state.FieldContainer.px),
-        0
+        0,
       )
     }
   } else if (m1) {
