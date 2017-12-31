@@ -10,7 +10,7 @@ export type GetState = () => State
 
 export type ThunkAction = (
   dispatch: Dispatch,
-  getState: GetState
+  getState: GetState,
 ) => void | Promise<void>
 
 type ThunkDispatch<A> = ThunkAction => A
@@ -45,13 +45,10 @@ export type Square = {
   playersId: number[],
 }
 
-export type BaseField = {
+export type Field = {
   id: number,
   title: string,
   code: string,
-}
-
-export type Field = BaseField & {
   squares: Array<Array<Square>>,
   players: Players,
   px: number,
