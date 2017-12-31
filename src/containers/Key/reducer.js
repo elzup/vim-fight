@@ -3,17 +3,17 @@ import type { Action, KeyLog } from '../../types'
 import { Actions } from '../FieldContainer/actionTypes'
 
 export type State = {
-  [id: number]: KeyLog,
+  [id: number | string]: KeyLog,
   lastId: number,
   history: string,
   stack: string,
 }
 
-const initialState: State = { lastId: 0, stack: '', history: '' }
+export const initialState: State = { lastId: 0, stack: '', history: '' }
 
 export default function(
   state: State = initialState,
-  action: Action
+  action: Action,
 ): Exact<State> {
   switch (action.type) {
     case Actions.RECEIVE_KEY: {

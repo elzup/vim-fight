@@ -12,7 +12,7 @@ type Props = {
 class ProductsContainer extends React.Component<Props> {
   render() {
     const { props } = this
-    return <FieldComponent squares={props.field.squares} players={{}} />
+    return <FieldComponent squares={props.field.squares} players={[]} />
   }
 }
 

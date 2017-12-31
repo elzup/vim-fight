@@ -1,13 +1,41 @@
 // @flow
 import reducer from './reducer'
-import * as actions from '../ProductsContainer/actions'
+import * as actions from '../FieldContainer/actions'
 
-const initialState = {
-  addedIds: [],
-  quantityById: {},
-}
+import { initialState } from './reducer'
 
-test('provide the initial state', () => {
-  // $FlowFixMe
-  // expect(reducer(undefined, {})).toEqual(initialState)
+test('RECEIVE_KEY', () => {
+  expect(reducer(initialState, actions.receiveKey('a'))).toEqual({
+    '1': {
+      id: 1,
+      charactor: 'a',
+      playerId: 0,
+    },
+  })
+})
+
+test('RECEIVE_KEY append', () => {
+  expect(
+    reducer(
+      {
+        '1': {
+          id: 1,
+          charactor: 'a',
+          playerId: 0,
+        },
+      },
+      actions.receiveKey('b'),
+    ),
+  ).toEqual({
+    '1': {
+      id: 1,
+      charactor: 'a',
+      playerId: 0,
+    },
+    '2': {
+      id: 2,
+      charactor: 'b',
+      playerId: 0,
+    },
+  })
 })

@@ -3,10 +3,13 @@ import * as React from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 
-import type { Field as FieldProps } from '../../types'
+import type { Square2D, Player } from '../../types'
 import Square from '../Square'
 
-type Props = $Shape<FieldProps>
+type Props = {
+  squares: Square2D,
+  players: Player[],
+}
 
 const Code = styled.div`
   padding: 20px;
@@ -29,7 +32,7 @@ const Field = (props: Props) => (
           <Square
             key={square.id}
             charactor={square.charactor}
-            players={square.playersId.map(id => props.players[id])}
+            players={props.players}
           />
         ))}
       </CodeLine>
