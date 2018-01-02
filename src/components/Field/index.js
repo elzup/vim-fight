@@ -32,7 +32,7 @@ const Field = (props: Props) => (
           <Square
             key={square.id}
             charactor={square.charactor}
-            players={props.players}
+            players={square.playersId}
           />
         ))}
       </CodeLine>

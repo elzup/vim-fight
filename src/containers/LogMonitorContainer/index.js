@@ -1,8 +1,7 @@
 // @flow
 import * as React from 'react'
 import { connect, type Connector } from 'react-redux'
-import type { State, Field } from '../../types'
-import type { State as KeyState } from '../Key/reducer'
+import type { State } from '../../types'
 import LogMonitorComponoent from '../../components/LogMonitor'
 import * as selectors from '../Key/selectors'
 
