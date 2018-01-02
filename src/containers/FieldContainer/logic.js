@@ -6,9 +6,9 @@ import type {
   Square,
   Dispatch,
   GetState,
-  VimOperator,
 } from '../../types'
 import * as actions from './actions'
+import * as playerActions from '../PlayerById/actions'
 import * as vimActions from '../Vim/actions'
 
 function codeToSquares(code): Array<Array<Square>> {
@@ -32,12 +32,12 @@ export function loadFields(): ThunkAction {
       const rawFiled = fields[0]
       const field: Field = {
         squares: codeToSquares(rawFiled.code),
-        players: { '1': { id: 1 } },
         px: 0,
         py: 0,
         ...rawFiled,
       }
       dispath(actions.receiveField(field))
+      dispath(playerActions.addPlayer({ id: 1 }))
     })
   }
 }
@@ -82,26 +82,12 @@ function nextPos(state: State, target: string, d: number = 1): number {
   return 0
 }
 
-type VimParseResult = {
-  op: VimOperator,
-  amount: number,
-  newStack: string,
-  hit: boolean,
-}
-
-function vimParse(s: string): VimParseResult {
-  return {
-    hit: false,
-  }
-}
-
 function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
   let newStack = ''
   const m0 = s.match(/^([0-9]*)([fFtT])(.?)$/)
   const m1 = s.match(/^([0-9]*)([dcv])(.?.?)$/)
-  const m2 = s.match(/^([0-9]*)([0a-zA-Z{}%\$\]])$/)
+  const m2 = s.match(/^([0-9]*)([0a-zA-Z{}%$\]])\$/)
   if (m0) {
-    const mount = parseInt(`0${m0[1]}`) || 1
     const dire = m0[2]
     const target = m0[3]
     if (target === '') {
@@ -126,21 +112,19 @@ function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
       )
     }
   } else if (m1) {
-    const mount = parseInt(`0${m1[1]}`) || 1
-    const op = m1[2]
     const to = m1[3]
-    if (to.length == 2) {
+    if (to.length === 2) {
       if ('fFtTia'.indexOf(to[0]) > -1) {
         // bad
       } else {
         // to[1];
       }
     }
-    if (to === '' || (to.length == 1 && 'fFtTia'.indexOf(to) > -1)) {
+    if (to === '' || (to.length === 1 && 'fFtTia'.indexOf(to) > -1)) {
       newStack = s
     }
   } else if (m2) {
-    const mount = parseInt(`0${m2[1]}`) || 1
+    const mount = parseInt(`0${m2[1]}`, 10) || 1
     const dire = m2[2]
     if (dire === 'h') {
       move(dispatch, state, -mount, 0)
@@ -173,7 +157,7 @@ export function gameSetup(): ThunkAction {
       const state = getState()
       dispatch(actions.receiveKey(e.key))
       const { newStack } = vimParseRun(dispatch, state, state.Key.stack + e.key)
-      if (state.Key.stack != newStack) {
+      if (state.Key.stack !== newStack) {
         dispatch(actions.updateStack(newStack))
       }
     }
