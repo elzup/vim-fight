@@ -3,7 +3,7 @@ import * as React from 'react'
 import { connect, type Connector } from 'react-redux'
 import type { State } from '../../types'
 import LogMonitorComponoent from '../../components/LogMonitor'
-import * as selectors from '../Key/selectors'
+import * as selectors from '../KeyLog/selectors'
 
 type Props = {
   stack: string,

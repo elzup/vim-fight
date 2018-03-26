@@ -1,4 +1,7 @@
 import * as game from '../../api/game'
+
+import Parser from 'js-vim-commands'
+
 import type {
   State,
   ThunkAction,
@@ -10,6 +13,8 @@ import type {
 import * as actions from './actions'
 import * as playerActions from '../PlayerById/actions'
 import * as vimActions from '../Vim/actions'
+
+const parser = new Parser()
 
 function codeToSquares(code): Array<Array<Square>> {
   let i = -1
@@ -83,6 +88,10 @@ function nextPos(state: State, target: string, d: number = 1): number {
 }
 
 function vimParseRun(dispatch: Dispatch, state: State, s: string): runResult {
+  console.log(s)
+  const res = parser.parse(s)
+  console.log(res)
+
   let newStack = ''
   const m0 = s.match(/^([0-9]*)([fFtT])(.?)$/)
   const m1 = s.match(/^([0-9]*)([dcv])(.?.?)$/)
@@ -156,8 +165,12 @@ export function gameSetup(): ThunkAction {
       }
       const state = getState()
       dispatch(actions.receiveKey(e.key))
-      const { newStack } = vimParseRun(dispatch, state, state.Key.stack + e.key)
-      if (state.Key.stack !== newStack) {
+      const { newStack } = vimParseRun(
+        dispatch,
+        state,
+        state.KeyInfo.stack + e.key,
+      )
+      if (state.KeyInfo.stack !== newStack) {
         dispatch(actions.updateStack(newStack))
       }
     }
